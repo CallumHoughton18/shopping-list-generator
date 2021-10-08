@@ -40,4 +40,4 @@ def parse_recipe_text_line(line: str, error_msg: str) -> Tuple[int, str]:
         ingredient_name = line_split[1].strip()
         return (ingredient_num, ingredient_name)
     except ValueError:
-        RecipeParsingError(error_msg)
+        raise RecipeParsingError(error_msg)
