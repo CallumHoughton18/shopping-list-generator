@@ -1,11 +1,13 @@
 import argparse
 import os
+import sys
+from typing import List
 
 from shopping_list_generator.recipelocator import read_and_parse_recipe
 from shopping_list_generator.shoppinglist import ShoppingList
 
 
-def main() -> None:
+def main(argv: List[str]) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("recipes", help="relative path of the recipe files")
     args = parser.parse_args()
@@ -20,6 +22,7 @@ def main() -> None:
             shopping_list.add_recipe(recipe)
         except IOError as err:
             print(f"Could not read the recipe file {recipe_file_name}: {err}")
+            return 1
 
     shopping_list_text = shopping_list.get_shopping_list_text()
 
@@ -31,7 +34,10 @@ def main() -> None:
             filetowrite.write(shopping_list_text)
     except IOError as err:
         print(f"Could not write to file {shopping_list_path}: {err}")
+        return 1
+    
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main(sys.argv))
