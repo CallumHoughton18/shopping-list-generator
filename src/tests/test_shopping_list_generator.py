@@ -49,3 +49,12 @@ class TestIntegrationCLITests:
         shopping_list_generator.__main__.main(['main.py', 'daal, spaghetti'])
 
         write_mock().write.assert_called_once_with("2 onion\n2 pepper\n1 lentil\n1 spaghetti")
+
+    @patch("builtins.open", new_callable=mock_open, read_data="1 onion\n1 pepper\n1 lentil")
+    def test_should_fail_on_invalid_recipe(self, mo):
+        configured_mock_open, write_mock = configure_mock_open(mo, ['1:onion\n\n1: pepper\n1 spaghetti\n\n\n'])
+
+        exit_code = shopping_list_generator.__main__.main(['main.py', 'daal, spaghetti'])
+        assert exit_code == 1
+
+        write_mock().write.never_called()

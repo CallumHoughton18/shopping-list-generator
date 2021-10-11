@@ -3,7 +3,7 @@ import os
 import sys
 from typing import List
 
-from shopping_list_generator.recipelocator import read_and_parse_recipe
+from shopping_list_generator.recipelocator import RecipeParsingError, read_and_parse_recipe
 from shopping_list_generator.shoppinglist import ShoppingList
 
 
@@ -22,6 +22,9 @@ def main(argv: List[str]) -> int:
             shopping_list.add_recipe(recipe)
         except IOError as err:
             print(f"Could not read the recipe file {recipe_file_name}: {err}")
+            return 1
+        except RecipeParsingError as err:
+            print(f"Could not parse recipe {recipe_file_name}: {err}")
             return 1
 
     shopping_list_text = shopping_list.get_shopping_list_text()
