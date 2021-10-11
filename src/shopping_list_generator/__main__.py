@@ -10,7 +10,7 @@ from shopping_list_generator.shoppinglist import ShoppingList
 def main(argv: List[str]) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("recipes", help="relative path of the recipe files")
-    args = parser.parse_args()
+    args = parser.parse_args(argv[1:])
 
     # Strip white space and append .txt to filename string if it does not end with .txt
     recipe_file_names = [x.strip() + '.txt' if not x.endswith('.txt') else x.strip()
@@ -35,7 +35,7 @@ def main(argv: List[str]) -> int:
     except IOError as err:
         print(f"Could not write to file {shopping_list_path}: {err}")
         return 1
-    
+
     return 0
 
 

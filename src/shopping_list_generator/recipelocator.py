@@ -18,7 +18,9 @@ def read_and_parse_recipe(relative_recipe_path: str) -> Recipe:
     new_recipe = Recipe(new_recipe_name)
 
     for line in open(recipe_path):
-        format_err_msg = f"""Formatting error in {recipe_path} on line {line}.
+        if not line.strip():
+            continue
+        format_err_msg = f"""Formatting error in {recipe_path} on line '{line}'.
         Ingredient must be in style '1 tomato'.
         With each ingredient on a new line"""
 
