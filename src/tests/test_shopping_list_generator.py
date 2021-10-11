@@ -7,7 +7,7 @@ import shopping_list_generator.__main__
 
 def configure_mock_open(mo, mock_file_contents: List[str]):
     write_mock = mock_open(read_data="")
-    handlers = (mo.return_value, 
+    handlers = (mo.return_value,
                 *[mock_open(read_data=content).return_value for content in mock_file_contents],
                 write_mock.return_value)
     mo.side_effect = handlers
@@ -28,7 +28,7 @@ class TestIntegrationCLITests:
 
     @patch("builtins.open", new_callable=mock_open, read_data="1 onion\n1 pepper\n1 lentil")
     def test_should_successfully_generate_shopping_list(self, mo):
-        configured_mock_open, write_mock = configure_mock_open(mo, ['1 onion\n1 pepper\n1 spaghetti'])
+        _, write_mock = configure_mock_open(mo, ['1 onion\n1 pepper\n1 spaghetti'])
 
         shopping_list_generator.__main__.main(['main.py', 'daal, spaghetti'])
 
@@ -36,7 +36,7 @@ class TestIntegrationCLITests:
 
     @patch("builtins.open", new_callable=mock_open, read_data="1 onion\n1 pepper\n1 lentil")
     def test_should_successfully_generate_shopping_list_and_handle_case(self, mo):
-        configured_mock_open, write_mock = configure_mock_open(mo, ['1 Onion\n1 Pepper\n1 spaghetti'])
+        _, write_mock = configure_mock_open(mo, ['1 Onion\n1 Pepper\n1 spaghetti'])
 
         shopping_list_generator.__main__.main(['main.py', 'daal, spaghetti'])
 
@@ -44,7 +44,7 @@ class TestIntegrationCLITests:
 
     @patch("builtins.open", new_callable=mock_open, read_data="1 onion\n1 pepper\n1 lentil")
     def test_should_successfully_handle_empty_lines(self, mo):
-        configured_mock_open, write_mock = configure_mock_open(mo, ['1 onion\n\n1 pepper\n1 spaghetti\n\n\n'])
+        _, write_mock = configure_mock_open(mo, ['1 onion\n\n1 pepper\n1 spaghetti\n\n\n'])
 
         shopping_list_generator.__main__.main(['main.py', 'daal, spaghetti'])
 
@@ -52,7 +52,7 @@ class TestIntegrationCLITests:
 
     @patch("builtins.open", new_callable=mock_open, read_data="1 onion\n1 pepper\n1 lentil")
     def test_should_fail_on_invalid_recipe(self, mo):
-        configured_mock_open, write_mock = configure_mock_open(mo, ['1:onion\n\n1: pepper\n1 spaghetti\n\n\n'])
+        _, write_mock = configure_mock_open(mo, ['1:onion\n\n1: pepper\n1 spaghetti\n\n\n'])
 
         exit_code = shopping_list_generator.__main__.main(['main.py', 'daal, spaghetti'])
         assert exit_code == 1
