@@ -28,7 +28,7 @@ setup(
     install_requires=[],
     entry_points={
         "console_scripts": [
-            "shopping-list-generator=shopping_list_generator.__main__:main",
+            "shopping-list-generator=shopping_list_generator.__main__",
         ]
     },
 )
