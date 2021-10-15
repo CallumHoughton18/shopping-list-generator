@@ -10,7 +10,7 @@ README = (HERE / "../README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="shopping-list-generator",
-    version="0.0.2",
+    version="0.0.3",
     description="Generate a shopping list from recipe .txt files",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -28,7 +28,7 @@ setup(
     install_requires=[],
     entry_points={
         "console_scripts": [
-            "shopping-list-generator=shopping_list_generator.__main__:main",
+            "shopping-list-generator=shopping_list_generator.__main__",
         ]
     },
 )
