@@ -10,3 +10,7 @@ The application uses your working directory to find recipe text files, and outpu
 
 So running the app from the src folder would look like:
 `pipenv run python -m shopping_list_generator "test_recipes/daal, test_recipes/curry"`
+
+You can also specify the quantity to multiply each recipe ingredient by like:
+`pipenv run python -m shopping_list_generator "test_recipes/daal-2, test_recipes/curry-2"`
+Which would multiply both the daal and curry ingredients by 2.
