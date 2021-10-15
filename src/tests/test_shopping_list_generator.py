@@ -43,6 +43,22 @@ class TestIntegrationCLITests:
         write_mock().write.assert_called_once_with("2 onion\n2 pepper\n1 lentil\n1 spaghetti")
 
     @patch("builtins.open", new_callable=mock_open, read_data="1 onion\n1 pepper\n1 lentil")
+    def test_should_successfully_handle_quantity_specified(self, mo):
+        _, write_mock = configure_mock_open(mo, ['1 Onion\n1 Pepper\n1 spaghetti'])
+
+        shopping_list_generator.__main__.main(['main.py', 'daal, spaghetti - 2'])
+
+        write_mock().write.assert_called_once_with("3 onion\n3 pepper\n1 lentil\n2 spaghetti")
+
+    @patch("builtins.open", new_callable=mock_open, read_data="1 onion\n1 pepper\n1 lentil")
+    def test_should_handle_separator_in_recipe_name(self, mo):
+        _, write_mock = configure_mock_open(mo, ['1 Onion\n1 Pepper\n1 spaghetti'])
+
+        shopping_list_generator.__main__.main(['main.py', 'da-al-2, s-pag-he-tti - 2'])
+
+        write_mock().write.assert_called_once_with("4 onion\n4 pepper\n2 lentil\n2 spaghetti")
+
+    @patch("builtins.open", new_callable=mock_open, read_data="1 onion\n1 pepper\n1 lentil")
     def test_should_successfully_handle_empty_lines(self, mo):
         _, write_mock = configure_mock_open(mo, ['1 onion\n\n1 pepper\n1 spaghetti\n\n\n'])
 

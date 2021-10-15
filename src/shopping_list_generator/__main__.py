@@ -5,6 +5,7 @@ from typing import List
 
 from shopping_list_generator.recipelocator import RecipeParsingError, read_and_parse_recipe
 from shopping_list_generator.shoppinglist import ShoppingList
+from shopping_list_generator.parsingutils import parse_recipe_name_and_quantity
 
 
 def main(argv: List[str]) -> int:
@@ -13,13 +14,14 @@ def main(argv: List[str]) -> int:
     args = parser.parse_args(argv[1:])
 
     # Strip white space and append .txt to filename string if it does not end with .txt
-    recipe_file_names = [x.strip() + '.txt' if not x.endswith('.txt') else x.strip()
-                         for x in args.recipes.split(',')]
+    # and parses quantity if it's specified, if not it defaults to 1
+    recipe_file_names_with_quantity = [parse_recipe_name_and_quantity(x, separator='-')
+                                       for x in args.recipes.split(',')]
     shopping_list = ShoppingList()
-    for recipe_file_name in recipe_file_names:
+    for (recipe_file_name, quantity) in recipe_file_names_with_quantity:
         try:
             recipe = read_and_parse_recipe(recipe_file_name)
-            shopping_list.add_recipe(recipe)
+            shopping_list.add_recipe(recipe, quantity)
         except IOError as err:
             print(f"Could not read the recipe file {recipe_file_name}: {err}")
             return 1
