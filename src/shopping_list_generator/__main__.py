@@ -10,7 +10,9 @@ from shopping_list_generator.parsingutils import parse_recipe_name_and_quantity
 
 def main(argv: List[str]) -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("recipes", help="relative path of the recipe files")
+    parser.add_argument("recipes", help="""relative path of the recipe files, with optional quantity.
+    \nExample usage:
+    shopping-list-generator \"recipe_folder/daal, recipe_folder/spaghetti-2\"""")
     args = parser.parse_args(argv[1:])
 
     # Strip white space and append .txt to filename string if it does not end with .txt
